@@ -1,6 +1,10 @@
 import os
 import json
+import datetime
 
+start = datetime.datetime.now()
+
+q = 4
 book_detail = ""
 count = 0
 cities = ["Hestia","Demeter","Hephaestus","Tartarus"]
@@ -8,24 +12,27 @@ print("\n"+"*"*15+"WELCOME TO LIBRARY OF BABEL (MINI VERSION)"+"*"*15)
 print("Maximum character length a book has : 4\nSo text with more than 6 characters will be split")
 print("Characters allowed : <a-z> <.> <,> <whitespace> <\\n>\n")
 
+#Getting user input
 user_text = input("Enter your text : ")
 user_text = user_text.strip().lower()
 length = len(user_text)
 
 book_details = []
 city_details = []
-if (length>4) :
-    if (length%4==0) :
-        n = int(length/4)
+if (length>q) :
+    if (length%q==0) :
+        n = int(length/q)
     else :
-        n = int(length/4 + 1)
+        n = int(length/q + 1)
 else :
     n = 1
 
 cond = True
 s = 0
-e = 4
+e = q
 fcwd = os.getcwd()+"/Files/"
+
+#Getting the matching books
 while cond == True :
     for l in range(1,n+1) :
         if (l<n) :
@@ -49,11 +56,13 @@ while cond == True :
         if count == n :
             cond = False
             break
-        s += 4
-        e += 4
+        s += q
+        e += q
 
 print()
 print("*"*15+"BOOK DETAILS"+"*"*15+"\n")
+
+#Printing the book
 
 p = 1
 if (len(book_details)) > 10 :
@@ -61,7 +70,7 @@ if (len(book_details)) > 10 :
     show = input("\nType here : ").lower()
     if (show == "yes") :
         book_details = book_details[:10]
-    
+
 for L, city in zip(book_details, city_details) :
     book = L.split(" ")
     print(f"BOOK {p} :")
@@ -72,3 +81,6 @@ for L, city in zip(book_details, city_details) :
     print(f"Floor : {book[7]} Library : {book[8]}")
     print(f"City : {city}\n")
     p+=1
+
+end = datetime.datetime.now()
+print(f"\nTotal Time Taken{end-start}")
