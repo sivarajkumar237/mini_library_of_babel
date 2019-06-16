@@ -1,0 +1,229 @@
+import string
+import os
+import json
+import datetime
+
+
+def check(temp_shelf_row, temp_shelf_col, temp_block_row, temp_block_col, temp_side, temp_poly, temp_floor, temp_library, srow, scol, brow, bcol, side, poly, floor, temp_book, c, temp_poly_no, poly_no) :
+    if (temp_floor>floor) :
+        temp_shelf_row = 1
+        temp_shelf_col = 1
+        temp_block_row = 1
+        temp_block_col = 1
+        temp_side = 1
+        temp_poly = 1
+        temp_floor = 1
+        temp_library += 1
+        c = 0
+        temp_book = 0
+        
+    if (temp_poly_no>poly_no) :
+        temp_shelf_row = 1
+        temp_shelf_col = 1
+        temp_block_row = 1
+        temp_block_col = 1
+        temp_side = 1
+        temp_poly = 1
+        c = 0
+        temp_floor += 1
+
+    elif (temp_poly>poly[c]) :
+        temp_shelf_row = 1
+        temp_shelf_col = 1
+        temp_block_row = 1
+        temp_block_col = 1
+        temp_side = 1
+        temp_poly = 1
+        temp_poly_no += 1
+        c += 1
+        temp_book = 0
+    elif (temp_side>side) :
+        temp_shelf_row = 1
+        temp_shelf_col = 1
+        temp_block_row = 1
+        temp_block_col = 1
+        temp_side = 1
+        temp_poly += 1
+        temp_book = 0
+    elif (temp_block_col>bcol) :
+        temp_shelf_row = 1
+        temp_shelf_col = 1
+        temp_block_row = 1
+        temp_block_col = 1
+        temp_side += 1
+        temp_book = 0
+        
+    elif (temp_block_row>brow) :
+        temp_shelf_row = 1
+        temp_shelf_col = 1
+        temp_block_row = 1
+        temp_block_col += 1
+        temp_book = 0
+        
+    elif (temp_shelf_col>scol) :
+        temp_shelf_row = 1
+        temp_shelf_col = 1
+        temp_block_row += 1
+        temp_book = 0
+        
+    elif (temp_shelf_row>srow) :
+        temp_shelf_row = 1
+        temp_shelf_col += 1
+        
+    return (temp_shelf_row, temp_shelf_col, temp_block_row, temp_block_col, temp_side, temp_poly, temp_floor, temp_library, temp_book, c, temp_poly_no, poly_no)
+
+
+letters = string.ascii_lowercase
+L = list(letters)
+OTHERS = [" ", ",", ".", "\n"]
+L.extend(OTHERS)
+
+#Details of the Library structure for different lenghts
+
+shelf_row = [ 5, 5, 15, 30, 30, 60, 120, 120, 360, 360, 720, 1440, 1440, 1440, 1440 ]
+shelf_col = [ 6, 6, 6, 6, 18, 18, 18, 18, 18, 54, 54, 54, 54, 54, 54 ]
+
+block_row = [ 1, 5, 5, 15, 30, 30, 90, 90, 90, 90, 270, 270, 270, 270, 270 ]
+block_col = [ 1, 1, 2, 2, 2, 6, 6, 6, 30, 30, 30, 30, 30, 30, 30 ]
+
+side_list = list(range(1,7))
+sides = [1,6,6,6,6,6,6,6,6,6,6,6,6,6,6]
+
+pol_1 =  1
+pol_2 =  [1]
+pol_3 =  [5]
+pol_4 =  [5]
+pol_5 =  [10,15]
+pol_6 =  [15, 20, 25, 30, 35]
+pol_7 =  [35	,40,	50,	65,	80,	95,	120, 140]
+pol_8 =  [35	,40,	50,	65,	80,	95,	120, 140]
+pol_9 =  [50,	75,	100,	130,	165,	205,	250,	275]
+pol_10 = [50,	75,	100,	130,	165,	205,	250,	275]
+pol_11 = [50,	75,	100,	130,	165,	205,	250,	275]
+pol_12 = [50,	75,	100,	130,	165,	205,	250,	275]
+pol_13 = [50,	75,	100,	130,	165,	205,	250,	275]
+pol_14 = [50,	75,	100,	130,	165,	205,	250,	275]
+pol_15 = [50,	75,	100,	130,	165,	205,	250,	275]
+
+pol = [ pol_1, pol_2, pol_3, pol_4, pol_5, pol_6, pol_7, pol_8, pol_9, pol_10, pol_11, pol_12, pol_13, pol_14, pol_15 ]
+
+floors = [ 1, 1, 1, 5, 5, 5, 5, 10, 10, 20, 50, 50, 50, 50, 50 ]
+
+libraries = [ 1, 1, 1, 1, 1, 1, 1, 15, 15, 75, 150, 2250, 67500, 2025000, 60750000 ]
+
+no_of_poly = [ 1, 1, 1, 1, 2, 5, 8, 8, 8, 8, 8, 8, 8, 8, 8 ]
+
+total_books = [ 30, 900, 27000, 810000, 24300000, 729000000, 21870000000, 656100000000, 19683000000000, 590490000000000, 1.77147E+016, 5.31441E+017, 1.594323E+019, 4.782969E+020, 1.4348907E+022]
+
+MASTER_LIST = { x : {"s_row" : s_row, "s_col" :  s_col, "b_row" : b_row, "b_col": b_col, "side" : side, "poly" :  poly, "floor" : floor, "library" : library} for x, s_row, s_col, b_row, b_col, poly, floor, library, side in zip( range(1,16), shelf_row, shelf_col, block_row, block_col, pol, floors, libraries, sides ) }
+
+
+#Creating Files with character length 1
+
+cwd = os.getcwd()
+fcwd = cwd+"/Files/"
+print(fcwd)
+os.mkdir(fcwd)
+os.mkdir(fcwd+"/1")
+os.chdir(fcwd+"/1")
+
+total_books = 0
+temp1 = {}
+book_1 = 0
+srow = 1
+scol = 1
+for i in L :
+ book_1+=1
+ if(srow>5) :
+     srow=1
+     scol+=1
+ fname = f"{str(book_1)} {srow} {scol} {MASTER_LIST[1]['b_row']} {MASTER_LIST[1]['b_col']} {MASTER_LIST[1]['side']} {MASTER_LIST[1]['poly']} {MASTER_LIST[1]['floor']} {MASTER_LIST[1]['library']}"
+ temp1.update({i:fname})
+ srow+=1
+
+with open("ml_1_1.json", "w") as f :
+ json.dump(temp1, f)
+
+#Other Lengths
+
+start = datetime.datetime.now()
+
+for u in range(2,7) :
+    length = u
+    print(f"LENGTH {length}\n")
+    VALUES = list(MASTER_LIST[length].values())
+    srow = VALUES[0]
+    scol = VALUES[1]
+    brow = VALUES[2]
+    bcol = VALUES[3]
+    side = VALUES[4]
+    poly = VALUES[5]
+    poly_no = len(VALUES[5])
+    floor = VALUES[6]
+    library = VALUES[7]
+    o = 0
+
+    pcwd = fcwd + str(length-1)
+    ncwd = fcwd + str(length)
+    os.chdir(pcwd)
+    os.mkdir(ncwd)
+    files = os.listdir(pcwd)
+
+    total_book = 0
+    temp_book = 0
+    temp_shelf_row = 1
+    temp_shelf_col = 1
+    temp_block_row = 1
+    temp_block_col = 1
+    temp_side = 1
+    temp_poly = 1
+    temp_poly_no = 1
+    temp_floor = 1
+    temp_library = 1
+    l = 1
+    c = 0
+    master_list = {}
+    file_no = 1
+    print("*"*15 + "STARTED" + "*"*15)
+
+    for file in files :
+        prev_content = ""
+        os.chdir(pcwd)
+        with open(file,"r") as f1 :
+            dictionary = json.load(f1)
+            os.chdir(ncwd)
+            for prev_content in dictionary.keys() :
+                for i in L :
+                    new_content = prev_content + i
+                    temp_shelf_row, temp_shelf_col, temp_block_row, temp_block_col, temp_side, temp_poly, temp_floor, temp_library, temp_book, c, temp_poly_no, poly_no = check(temp_shelf_row, temp_shelf_col, temp_block_row, temp_block_col, temp_side, temp_poly, temp_floor, temp_library, srow, scol, brow, bcol, side, poly, floor, temp_book, c, temp_poly_no, poly_no)
+                    temp_book+=1
+                    total_book+=1
+                    o +=1
+
+                    book_tag = f"{temp_book} {temp_shelf_row} {temp_shelf_col} {temp_block_row} {temp_block_col} {temp_side} {temp_poly_no} {temp_floor} {temp_library}"
+                    master_list.update({new_content : book_tag})
+                    temp_shelf_row+=1
+                    if (o%4000000==0) :
+                        print(total_book)
+                    if (total_books[length]>4000000) :
+                        if (o>4000000) :
+                            f_name = f"ml_{length}_{l}" + ".json"
+                            with open(f_name, "w") as f2 :
+                                json.dump(master_list,f2)
+                            l+=1
+                            print(f"File {file_no} Created")
+                            o = 0
+                            file_no += 1
+                            master_list = {}
+                    if (total_books[length-1]==total_book) :
+                        f_name = f"ml_{length}_{l}" + ".json"
+                        with open(f_name, "w") as f2 :
+                            json.dump(master_list,f2)
+                        print(f"File {file_no} Created")
+                        print(f"Total Books Made : {total_book}\n")
+                        print("*"*15 + "FINISHED" + "*"*15)
+
+                    temp_shelf_row, temp_shelf_col, temp_block_row, temp_block_col, temp_side, temp_poly, temp_floor, temp_library, temp_book, c, temp_poly_no, poly_no = check(temp_shelf_row, temp_shelf_col, temp_block_row, temp_block_col, temp_side, temp_poly, temp_floor, temp_library, srow, scol, brow, bcol, side, poly, floor, temp_book, c, temp_poly_no, poly_no)
+
+end = datetime.datetime.now()
+print(f"\nTotal Time Taken{end-start}")
