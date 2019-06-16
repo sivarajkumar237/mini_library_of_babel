@@ -186,7 +186,7 @@ for u in range(2,7) :
     file_no = 1
     print("*"*15 + "STARTED" + "*"*15)
 
-    for file in files :
+    for file in files : 
         prev_content = ""
         os.chdir(pcwd)
         with open(file,"r") as f1 :
