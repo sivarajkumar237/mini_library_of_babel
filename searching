@@ -1,0 +1,74 @@
+import os
+import json
+
+book_detail = ""
+count = 0
+cities = ["Hestia","Demeter","Hephaestus","Tartarus"]
+print("\n"+"*"*15+"WELCOME TO LIBRARY OF BABEL (MINI VERSION)"+"*"*15)
+print("Maximum character length a book has : 4\nSo text with more than 6 characters will be split")
+print("Characters allowed : <a-z> <.> <,> <whitespace> <\\n>\n")
+
+user_text = input("Enter your text : ")
+user_text = user_text.strip().lower()
+length = len(user_text)
+
+book_details = []
+city_details = []
+if (length>4) :
+    if (length%4==0) :
+        n = int(length/4)
+    else :
+        n = int(length/4 + 1)
+else :
+    n = 1
+
+cond = True
+s = 0
+e = 4
+fcwd = os.getcwd()+"/Files/"
+while cond == True :
+    for l in range(1,n+1) :
+        if (l<n) :
+            text = user_text[s:e]
+            y = e-s
+        else :
+            text = user_text[s:]
+            y = len(user_text)-s
+        cwd = fcwd + str(y)
+        os.chdir(cwd)
+        # print(os.listdir(cwd))
+        for file in os.listdir(cwd) :
+            with open(file,"r") as f :
+                dictionary = json.load(f)
+                if text in dictionary.keys() :
+                    book_detail = dictionary.get(text)
+                    count += 1
+                    book_details.append(book_detail)
+                    city_details.append(cities[y-1])
+                    break
+        if count == n :
+            cond = False
+            break
+        s += 4
+        e += 4
+
+print()
+print("*"*15+"BOOK DETAILS"+"*"*15+"\n")
+
+p = 1
+if (len(book_details)) > 10 :
+    print(f"{len(book_details)} books are found. \nType \"yes\" to print the first 10 books alone or Type anything else to print all the books")
+    show = input("\nType here : ").lower()
+    if (show == "yes") :
+        book_details = book_details[:10]
+    
+for L, city in zip(book_details, city_details) :
+    book = L.split(" ")
+    print(f"BOOK {p} :")
+    print("-"*10)
+    print(f"Book No. {book[0]}\nShelf : {book[1]} row, {book[2]} col")
+    print(f"Block : {book[3]} row, {book[4]} col")
+    print(f"Side  : {book[5]} of the polygon no. {book[6]}")
+    print(f"Floor : {book[7]} Library : {book[8]}")
+    print(f"City : {city}\n")
+    p+=1
